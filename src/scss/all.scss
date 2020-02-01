@@ -1,0 +1,12 @@
+@import "variables.scss";
+
+@import "reset";
+@import "app.scss";
+
+@import "~simple-line-icons/scss/simple-line-icons";
+
+//Components
+@import "../components/header/header";
+
+//Views
+@import "../views/Home/home";
