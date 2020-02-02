@@ -3,8 +3,7 @@ import { Route, Router, Switch } from 'react-router-dom';
 import history from './history';
 import Header from './components/header';
 import Home from './views/Home';
-
-const Teste = () => <div>Teste</div>;
+import Product from "./views/Product";
 
 const App = () => (
   <div className="app">
@@ -13,7 +12,7 @@ const App = () => (
       <main className="main">
         <Switch>
           <Route path="/" component={Home} exact />
-          <Route path="/produto/:id" component={Teste} />
+          <Route path="/produto/:id" component={Product} />
           <Route component={Home} />
         </Switch>
       </main>
