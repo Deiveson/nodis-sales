@@ -52,14 +52,18 @@ class Product extends Component <RouteProps, MyState> {
             <img src={data.imageUrl} alt={data.imageUrl} />
           </div>
           <div className="product__info">
-            <div className="product__info--title title">{data.name}</div>
-            <div className="product__info--description">{data.description}</div>
-            <div className="product__info--price">
-              R$
-              {formatCurrency(data.salePrice)}
+            <div className="product__info__top">
+              <div className="product__info__top--title title">{data.name}</div>
+              <div className="product__info__top--description"><p>{data.description}</p></div>
             </div>
-            <div className="product__info--freight">Frete Grátis</div>
-            <div className="product__info--add-cart"><Button color="primary" text="Adicionar ao Carrinho" /></div>
+            <div className="product__info__bottom">
+              <div className="product__info__bottom--price">
+                R$
+                {formatCurrency(data.salePrice)}
+              </div>
+              <div className="product__info__bottom--freight">Frete Grátis</div>
+              <div className="product__info__bottom--add-cart"><Button color="primary" text="Adicionar ao Carrinho" /></div>
+            </div>
           </div>
         </section>
       );
