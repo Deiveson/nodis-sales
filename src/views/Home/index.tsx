@@ -14,6 +14,15 @@ const Banner: React.FC = () => (
   </section>
 );
 
+const CardProduct: React.FC = () => (
+  <div className="card-product">
+    <div className="card-product--image">
+      <img src="https://images-shoptime.b2w.io/produtos/01/00/sku/7134/2/7134233P.jpg" alt="panela" />
+    </div>
+    <div className="card-product--name">Panela de Arroz 10 xícaras ML-2900 NKS Milano 220V</div>
+  </div>
+);
+
 const Home: React.FC = () => (
   <section className="home">
     <Banner />
@@ -23,9 +32,12 @@ const Home: React.FC = () => (
         <div className="home__products__header--aside ">ver todos</div>
       </div>
       <div className="home__products__container">
+        <CardProduct />
+        <CardProduct />
+        <CardProduct />
+        <CardProduct />
       </div>
     </section>
   </section>
 );
-
 export default Home;
