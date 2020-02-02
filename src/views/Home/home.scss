@@ -33,4 +33,25 @@
       font-size: 1em;
     }
   }
+  &__products{
+    margin-top: 5rem;
+    &__header{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+
+      &--title{
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      &--aside{
+        font-size: 0.9em;
+        color: #d3d3d3;
+        border-bottom: 1px solid;
+      }
+    }
+  }
 }
