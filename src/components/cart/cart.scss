@@ -1,8 +1,9 @@
+$padding: 2rem;
 .container-cart{
   position: fixed;
   width: 100vw;
   height: 100vw;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.3);
   z-index: 2;
 }
 .cart{
@@ -11,4 +12,65 @@
   height: 100vh;
   width: 30vw;
   background-color: #f4f4f5;
+  box-shadow: -10px 0px 42px -16px rgba(0,0,0,0.75);
+  &__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+    padding: $padding;
+    i{
+      color:  $danger;
+    }
+    span{
+      font-size: 0.8em;
+      text-transform: uppercase;
+    }
+  }
+  &__list{
+    &__item{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background-color: white;
+      margin-bottom: 10px;
+      &--info{
+        display: flex;
+        align-items: center;
+        i{
+          margin-right: 10px;
+        }
+        picture{
+          margin-right: 5px;
+        }
+        span{
+          text-transform: uppercase;
+          font-size: 0.9rem;
+          text-align: justify-all;
+          width: 50%;
+          overflow: hidden;
+        }
+      }
+      &--price{
+        margin-right: 10px;
+      }
+    }
+  }
+  &__footer{
+    position: absolute;
+    width: calc(100% - 4rem);
+    bottom: 0;
+    padding: $padding;
+    &--total{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    button{
+      margin-top: 8px;
+      display: block;
+      width: 100%;
+    }
+  }
 }
