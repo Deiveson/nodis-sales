@@ -50,7 +50,24 @@
       &--aside{
         font-size: 0.9em;
         color: #bfbfbf;
-        border-bottom: 1px solid;
+        cursor: pointer;
+        &:after{
+          position: relative;
+          top: 5px;
+          content: '';
+          display: block;
+          width: 0;
+          height: 1px;
+          background: lighten(#bfbfbf, 30%);
+          transition: all .3s;
+          transform-origin: center;
+        }
+        &:hover{
+          &:after{
+            width: 100%;
+            background: #bfbfbf;
+          }
+        }
       }
     }
     &__container{

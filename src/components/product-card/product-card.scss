@@ -1,10 +1,11 @@
 .product-card{
+  cursor: pointer;
   &__image{
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px solid lightgrey;
-    min-height: 300px;
+    height: 300px;
     img{
       min-width: 210px;
     }
