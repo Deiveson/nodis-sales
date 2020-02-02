@@ -3,7 +3,7 @@ import logoAlt from '../../assets/images/logo-white.png';
 import Button from '../../components/button';
 import ProductCard from '../../components/product-card';
 
-import loding from '../../assets/images/loading-bounce.svg';
+import LoadingBounce from '../../components/loading';
 
 interface Product {
     id: number;
@@ -29,6 +29,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     loadProducts();
   }, []);
+
   async function loadProducts() {
     const response = await fetch('https://frontend-challenge-beginner.herokuapp.com/skus/');
     const data = await response.json();
@@ -56,9 +57,10 @@ const Home: React.FC = () => {
               />
             ))}
           </div>
-        ) : <div style={{ textAlign: 'center' }}><img src={loding} alt="loading..." /></div>}
+        ) : <LoadingBounce />}
       </section>
     </section>
   );
 };
+
 export default Home;
