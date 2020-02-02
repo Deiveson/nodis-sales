@@ -1,0 +1,41 @@
+
+// Stack multiple shadows, one from the left, the other from the right
+button:hover,
+button:focus {
+  box-shadow:
+          inset -5em 0 0 0 var(--hover),
+          inset 5em 0 0 0 var(--hover);
+}
+$colors: (
+        button--white: white,
+);
+
+@each $button, $color in $colors {
+  .#{$button} {
+    --color: #{$color};
+    --hover: #{adjust-hue($color, 45deg)};
+  }
+}
+
+button {
+  background: none;
+  border: 2px solid;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+  color: var(--color);
+  transition: 0.25s;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
+
+.button--white{
+  &:hover,
+  &:focus {
+    color: $primary;
+  }
+}
