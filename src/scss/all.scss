@@ -2,6 +2,7 @@
 
 @import "reset";
 @import "fonts";
+@import "utilities";
 @import "app.scss";
 
 @import "~simple-line-icons/scss/simple-line-icons";
@@ -9,6 +10,7 @@
 //Components
 @import "../components/header/header";
 @import "../components/button/button";
+@import "../components/product-card/product-card";
 
 //Views
 @import "../views/Home/home";

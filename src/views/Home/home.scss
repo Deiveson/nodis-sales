@@ -33,4 +33,47 @@
       font-size: 1em;
     }
   }
+  &__products{
+    margin-top: 5rem;
+    &__header{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+
+      &--title{
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      &--aside{
+        font-size: 0.9em;
+        color: #bfbfbf;
+        cursor: pointer;
+        &:after{
+          position: relative;
+          top: 5px;
+          content: '';
+          display: block;
+          width: 0;
+          height: 1px;
+          background: lighten(#bfbfbf, 30%);
+          transition: all .3s;
+          transform-origin: center;
+        }
+        &:hover{
+          &:after{
+            width: 100%;
+            background: #bfbfbf;
+          }
+        }
+      }
+    }
+    &__container{
+      display: grid;
+      grid: auto / repeat(3, 1fr);
+      grid-gap: 40px 100px;
+    }
+  }
 }
