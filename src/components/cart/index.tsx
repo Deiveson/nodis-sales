@@ -1,46 +1,44 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
-
-import { ApplicationState } from '../../store';
-import { Product } from '../../store/ducks/cart/types';
-import * as CartActions from '../../store/ducks/cart/actions';
 
 import Icon from '../icon';
 import Button from '../button';
 
-interface StateProps {
-  products: Product[]
+export interface ProductCartInterface {
+  id: number;
+  name: string;
+  imageUrl: string;
+  salePrice: string;
 }
 
-interface DispatchProps {
-  addProduct(): void;
-  removeProduct(): void
-  showCart(): void
-  hideCart(): void
+interface CartProps {
+  products: ProductCartInterface[],
+  setProducts(val?): void;
 }
 
-interface OwnProps {
-
-}
-
-type Props = StateProps & DispatchProps & OwnProps
-
-const CartItem = () => (
+const CartItem = ({
+  imageUrl, name, saleValue, id, removeItem,
+}) => (
   <div className="cart__list__item">
     <div className="cart__list__item--info">
-      <Icon value="close" />
-      <picture><img src="https://images-shoptime.b2w.io/produtos/01/00/sku/7134/2/7134233P.jpg" alt="image" /></picture>
-      <span className="title">Jogo Game Of Life Meu Malvado Favorito - Hasbro</span>
+      <Icon value="close cursor-pointer" onClick={() => removeItem(id)} />
+      <picture><img src={imageUrl} alt="image" /></picture>
+      <span className="title">{name}</span>
     </div>
     <div className="cart__list__item--price">
-      R$122,00
+      R$
+      {saleValue}
     </div>
   </div>
 );
 
-class Cart extends Component<Props> {
+class Cart extends Component<CartProps> {
   componentDidMount() {
+  }
+
+  removeItem(id) {
+    let prod = this.props.products;
+    prod = prod.filter((item) => item.id !== id);
+    this.props.setProducts(prod);
   }
 
   render() {
@@ -52,8 +50,15 @@ class Cart extends Component<Props> {
             <Icon value="close" />
           </section>
           <section className="car__list">
-            <CartItem />
-            <CartItem />
+            {this.props.products?.map((product) => (
+              <CartItem
+                imageUrl={product.imageUrl}
+                name={product.name}
+                saleValue={product.salePrice}
+                id={product.id}
+                removeItem={(id) => this.removeItem(id)}
+              />
+            ))}
           </section>
           <section className="cart__footer">
             <div className="cart__footer--total">
@@ -68,10 +73,4 @@ class Cart extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state: ApplicationState) => ({
-  cart: state.cart,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(CartActions, dispatch);
-
-export default connect(mapStateToProps)(Cart);
+export default Cart;
