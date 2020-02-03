@@ -8,12 +8,17 @@ $padding: 2rem;
 }
 .cart{
   position: absolute;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "cart-header" "cart-list" "cart-footer";
   right: 0;
   height: 100vh;
   width: 30vw;
   background-color: #f4f4f5;
   box-shadow: -10px 0px 42px -16px rgba(0,0,0,0.75);
   &__header{
+    grid-area: cart-header;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,6 +33,8 @@ $padding: 2rem;
     }
   }
   &__list{
+    overflow: scroll;
+    grid-area: cart-list;
     &__item{
       display: flex;
       align-items: center;
@@ -58,7 +65,7 @@ $padding: 2rem;
     }
   }
   &__footer{
-    position: absolute;
+    grid-area: cart-footer;
     width: calc(100% - 4rem);
     bottom: 0;
     padding: $padding;
