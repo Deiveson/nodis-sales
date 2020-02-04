@@ -3,8 +3,14 @@ $padding: 2rem;
   position: fixed;
   width: 100vw;
   height: 100vw;
-  background-color: rgba(0,0,0,0.3);
-  z-index: 2;
+  background-color: rgba(0,0,0,0);
+  transition: background-color 0.3s ease-in;
+  transform-origin: right;
+  z-index: -1;
+  &.show-background{
+    background-color: rgba(0,0,0,0.3);
+    z-index: 2;
+  }
 }
 .cart{
   position: absolute;
@@ -12,11 +18,16 @@ $padding: 2rem;
   grid-template-columns: auto;
   grid-template-rows: auto 1fr auto;
   grid-template-areas: "cart-header" "cart-list" "cart-footer";
-  right: 0;
+  right: -35vw;
   height: 100vh;
   width: 30vw;
   background-color: #f4f4f5;
   box-shadow: -10px 0px 42px -16px rgba(0,0,0,0.75);
+  transition: right 0.5s ease-in;
+  transform-origin: right;
+  &.show-cart{
+    right: 0;
+  }
   &__header{
     grid-area: cart-header;
     display: flex;

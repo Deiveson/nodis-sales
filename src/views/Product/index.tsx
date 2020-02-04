@@ -6,10 +6,26 @@ import Button from '../../components/button';
 import { ProductCartInterface } from '../../components/cart';
 
 
-async function loadProducts(id, call) {
-  const response = await fetch(`https://frontend-challenge-beginner.herokuapp.com/skus/${id}`);
-  const data = await response.json();
-  call(data);
+// async function loadProducts(id, call) {
+//   const response = await fetch(`https://frontend-challenge-beginner.herokuapp.com/skus/${id}`);
+//   const data = await response.json();
+//   call(data);
+// }
+
+function loadProducts(id, call, load) {
+  load();
+  fetch(`https://frontend-challenge-beginner.herokuapp.com/skus/${id}`).then(
+    (res) => {
+      if (res.ok) {
+        res.json().then((data) => {
+          call(data);
+          load();
+        });
+      } else console.log('erro');
+    },
+  ).catch((err) => {
+    console.log(err.message);
+  });
 }
 interface ProductInterface {
   id: number;
@@ -21,6 +37,7 @@ interface ProductInterface {
 }
 interface MyState {
   data: ProductInterface,
+  loading: boolean
 }
 
 interface Props {
@@ -37,18 +54,21 @@ class Product extends Component <AllProps, MyState> {
       data: {
         id: 0, name: '', imageUrl: '', description: '', salePrice: '', promotionalPrice: '',
       },
+      loading: false,
     };
   }
 
-  componentDidMount(): void {
-    loadProducts(this.props.match.params.id, (res) => this.setState({ data: res }));
+  componentDidMount(){
+    loadProducts(this.props.match.params.id, (res) => this.setState({ data: res }),
+      () => this.setState((state) => ({ loading: !state.loading })));
   }
 
   setProduct(id, name, imageUrl, salePrice) {
     const prod = this.props.products;
-    this.props.setProducts(prod.push({
+    prod.push({
       id, name, salePrice, imageUrl,
-    }));
+    });
+    this.props.setProducts(prod);
   }
 
   render() {
@@ -60,8 +80,9 @@ class Product extends Component <AllProps, MyState> {
         description: '',
         salePrice: '',
       },
+      loading = false,
     } = this.state;
-    if (data.imageUrl) {
+    if (!loading) {
       return (
         <section className="product">
           <div className="product__image">

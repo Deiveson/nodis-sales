@@ -50,15 +50,20 @@ class Cart extends Component<CartProps> {
             <Icon value="close" />
           </section>
           <section className="car__list">
-            {this.props.products?.map((product) => (
-              <CartItem
-                imageUrl={product.imageUrl}
-                name={product.name}
-                saleValue={product.salePrice}
-                id={product.id}
-                removeItem={(id) => this.removeItem(id)}
-              />
-            ))}
+            {this.props.products?.map && this.props.products?.map((product) => {
+              if (product.name) {
+                return (
+                  <CartItem
+                    imageUrl={product.imageUrl}
+                    name={product.name}
+                    saleValue={product.salePrice}
+                    id={product.id}
+                    removeItem={(id) => this.removeItem(id)}
+                  />
+                );
+              } return <></>;
+            }
+            )}
           </section>
           <section className="cart__footer">
             <div className="cart__footer--total">
