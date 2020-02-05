@@ -72,8 +72,8 @@
     }
     &__container{
       display: grid;
-      grid: auto / repeat(3, 1fr);
-      grid-gap: 40px 100px;
+      grid: auto / repeat(4, 1fr);
+      grid-gap: 40px 40px;
     }
   }
 }
