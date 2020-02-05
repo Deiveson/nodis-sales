@@ -5,6 +5,7 @@ import Header from './components/header';
 import Home from './views/Home';
 import Product from './views/Product';
 import Cart from './components/cart';
+import Footer from './components/footer';
 
 
 const initialProducts = [{
@@ -33,8 +34,8 @@ const App = () => {
   return (
     <>
       <Cart products={products} setProducts={(val) => setLocalProducts(val)} />
-      <div className="app">
-        <Router history={history}>
+      <Router history={history}>
+        <div className="app">
           <Header />
           <main className="main">
             <Switch>
@@ -43,9 +44,9 @@ const App = () => {
               <Route component={Home} />
             </Switch>
           </main>
-          <footer className="footer" />
-        </Router>
-      </div>
+        </div>
+        <Footer />
+      </Router>
     </>
   );
 };
