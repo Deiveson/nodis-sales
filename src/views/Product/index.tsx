@@ -3,7 +3,7 @@ import { RouteProps } from 'react-router';
 import LoadingBounce from '../../components/loading';
 import { formatCurrency } from '../../components/util/fnUtils';
 import Button from '../../components/button';
-import { ProductCartInterface } from '../../components/cart';
+import CartContext from '../../contexts/CartContext';
 
 
 // async function loadProducts(id, call) {
@@ -40,14 +40,7 @@ interface MyState {
   loading: boolean
 }
 
-interface Props {
-  products: ProductCartInterface[],
-  setProducts(val?): void;
-}
-
-type AllProps = RouteProps & Props
-
-class Product extends Component <AllProps, MyState> {
+class Product extends Component <RouteProps, MyState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,17 +51,17 @@ class Product extends Component <AllProps, MyState> {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     loadProducts(this.props.match.params.id, (res) => this.setState({ data: res }),
       () => this.setState((state) => ({ loading: !state.loading })));
   }
 
-  setProduct(id, name, imageUrl, salePrice) {
-    const prod = this.props.products;
+  setProduct(data, allProducts, setProducts) {
+    const prod = allProducts;
     prod.push({
-      id, name, salePrice, imageUrl,
+      id: data.id, name: data.name, salePrice: data.salePrice, imageUrl: data.imageUrl,
     });
-    this.props.setProducts(prod);
+    setProducts(prod);
   }
 
   render() {
@@ -84,25 +77,29 @@ class Product extends Component <AllProps, MyState> {
     } = this.state;
     if (!loading) {
       return (
-        <section className="product">
-          <div className="product__image">
-            <img src={data.imageUrl} alt={data.imageUrl} />
-          </div>
-          <div className="product__info">
-            <div className="product__info__top">
-              <div className="product__info__top--title title">{data.name}</div>
-              <div className="product__info__top--description"><p>{data.description}</p></div>
-            </div>
-            <div className="product__info__bottom">
-              <div className="product__info__bottom--price">
-                R$
-                {formatCurrency(data.salePrice)}
+        <CartContext.Consumer>
+          {({ products, setProducts }) => (
+            <section className="product">
+              <div className="product__image">
+                <img src={data.imageUrl} alt={data.imageUrl} />
               </div>
-              <div className="product__info__bottom--freight">Frete Grátis</div>
-              <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data.id, data.name, data.imageUrl, data.salePrice)} color="primary" text="Adicionar ao Carrinho" /></div>
-            </div>
-          </div>
-        </section>
+              <div className="product__info">
+                <div className="product__info__top">
+                  <div className="product__info__top--title title">{data.name}</div>
+                  <div className="product__info__top--description"><p>{data.description}</p></div>
+                </div>
+                <div className="product__info__bottom">
+                  <div className="product__info__bottom--price">
+                    R$
+                    {formatCurrency(data.salePrice)}
+                  </div>
+                  <div className="product__info__bottom--freight">Frete Grátis</div>
+                  <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data, products, (prods) => setProducts(prods))} color="primary" text="Adicionar ao Carrinho" /></div>
+                </div>
+              </div>
+            </section>
+          )}
+        </CartContext.Consumer>
       );
     } return <LoadingBounce />;
   }

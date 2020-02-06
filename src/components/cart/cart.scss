@@ -4,7 +4,7 @@ $padding: 2rem;
   width: 100vw;
   height: 100vw;
   background-color: rgba(0,0,0,0);
-  transition: background-color 0.3s ease-in;
+  transition: all 0.3s ease-in;
   transform-origin: right;
   z-index: -1;
   &.show-background{
@@ -21,9 +21,9 @@ $padding: 2rem;
   right: -35vw;
   height: 100vh;
   width: 30vw;
-  background-color: #f4f4f5;
+  background-color: #eaeaea;
   box-shadow: -10px 0px 42px -16px rgba(0,0,0,0.75);
-  transition: right 0.5s ease-in;
+  transition: all 0.5s ease-in-out;
   transform-origin: right;
   &.show-cart{
     right: 0;
@@ -60,11 +60,16 @@ $padding: 2rem;
           margin-right: 10px;
         }
         picture{
-          margin-right: 5px;
+          width: 80px;
+          margin-right: 14px;
+          img{
+            position: relative;
+            width: 100%;
+          }
         }
         span{
           text-transform: uppercase;
-          font-size: 0.9rem;
+          font-size: 0.8em;
           text-align: justify-all;
           width: 50%;
           overflow: hidden;
@@ -79,7 +84,7 @@ $padding: 2rem;
     grid-area: cart-footer;
     width: calc(100% - 4rem);
     bottom: 0;
-    padding: $padding;
+    padding: 1rem $padding;
     &--total{
       display: flex;
       justify-content: space-between;
