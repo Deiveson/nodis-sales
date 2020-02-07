@@ -3,14 +3,7 @@ import { RouteProps } from 'react-router';
 import LoadingBounce from '../../components/loading';
 import { formatCurrency } from '../../components/util/fnUtils';
 import Button from '../../components/button';
-import { ProductCartInterface } from '../../components/cart';
-
-
-// async function loadProducts(id, call) {
-//   const response = await fetch(`https://frontend-challenge-beginner.herokuapp.com/skus/${id}`);
-//   const data = await response.json();
-//   call(data);
-// }
+import CartContext from '../../contexts/CartContext';
 
 function loadProducts(id, call, load) {
   load();
@@ -27,6 +20,7 @@ function loadProducts(id, call, load) {
     console.log(err.message);
   });
 }
+
 interface ProductInterface {
   id: number;
   name: string;
@@ -40,14 +34,7 @@ interface MyState {
   loading: boolean
 }
 
-interface Props {
-  products: ProductCartInterface[],
-  setProducts(val?): void;
-}
-
-type AllProps = RouteProps & Props
-
-class Product extends Component <AllProps, MyState> {
+class Product extends Component <RouteProps, MyState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,17 +45,30 @@ class Product extends Component <AllProps, MyState> {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     loadProducts(this.props.match.params.id, (res) => this.setState({ data: res }),
       () => this.setState((state) => ({ loading: !state.loading })));
   }
 
-  setProduct(id, name, imageUrl, salePrice) {
-    const prod = this.props.products;
-    prod.push({
-      id, name, salePrice, imageUrl,
+  setProduct(data, allProducts, setProducts, allQtd, setAllQtd) {
+    const prod = allProducts;
+    let found = false;
+    prod.forEach((item) => {
+      if (item.id === data.id) {
+        found = true;
+      }
     });
-    this.props.setProducts(prod);
+    if (!found) {
+      prod.push({
+        id: data.id, name: data.name, salePrice: data.salePrice, imageUrl: data.imageUrl,
+      });
+      setProducts(prod);
+    }
+    if (allQtd[data.id]) {
+      setAllQtd({ ...allQtd, [data.id]: allQtd[data.id] + 1 });
+    } else {
+      setAllQtd({ ...allQtd, [data.id]: 1 });
+    }
   }
 
   render() {
@@ -84,25 +84,31 @@ class Product extends Component <AllProps, MyState> {
     } = this.state;
     if (!loading) {
       return (
-        <section className="product">
-          <div className="product__image">
-            <img src={data.imageUrl} alt={data.imageUrl} />
-          </div>
-          <div className="product__info">
-            <div className="product__info__top">
-              <div className="product__info__top--title title">{data.name}</div>
-              <div className="product__info__top--description"><p>{data.description}</p></div>
-            </div>
-            <div className="product__info__bottom">
-              <div className="product__info__bottom--price">
-                R$
-                {formatCurrency(data.salePrice)}
+        <CartContext.Consumer>
+          {({
+            products, setProducts, allQtd, setAllQtd,
+          }) => (
+            <section className="product">
+              <div className="product__image">
+                <img src={data.imageUrl} alt={data.imageUrl} />
               </div>
-              <div className="product__info__bottom--freight">Frete Grátis</div>
-              <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data.id, data.name, data.imageUrl, data.salePrice)} color="primary" text="Adicionar ao Carrinho" /></div>
-            </div>
-          </div>
-        </section>
+              <div className="product__info">
+                <div className="product__info__top">
+                  <div className="product__info__top--title title">{data.name}</div>
+                  <div className="product__info__top--description"><p>{data.description}</p></div>
+                </div>
+                <div className="product__info__bottom">
+                  <div className="product__info__bottom--price">
+                    R$
+                    {formatCurrency(data.salePrice)}
+                  </div>
+                  <div className="product__info__bottom--freight">Frete Grátis</div>
+                  <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data, products, (prods) => setProducts(prods), allQtd, (qtd) => setAllQtd(qtd))} color="primary" text="Adicionar ao Carrinho" /></div>
+                </div>
+              </div>
+            </section>
+          )}
+        </CartContext.Consumer>
       );
     } return <LoadingBounce />;
   }
