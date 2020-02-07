@@ -46,14 +46,14 @@ const Home: React.FC = () => {
         </div>
         {products ? (
           <div className="home__products__container">
-            {products?.map((product) => (
+            {products?.map((product, i) => (
               <ProductCard
                 promotionalPrice={product.promotionalPrice}
                 salePrice={product.salePrice}
                 imageUrl={product.imageUrl}
                 name={product.name}
                 id={product.id}
-                key={product.id}
+                key={`${i}prod`}
               />
             ))}
           </div>
