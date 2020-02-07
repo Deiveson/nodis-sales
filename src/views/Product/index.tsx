@@ -4,8 +4,9 @@ import LoadingBounce from '../../components/loading';
 import { formatCurrency } from '../../components/util/fnUtils';
 import Button from '../../components/button';
 import CartContext from '../../contexts/CartContext';
+import GenericErrorPage from '../Error/GenericError';
 
-function loadProducts(id, call, load) {
+function loadProducts(id, call, load, error) {
   load();
   fetch(`https://frontend-challenge-beginner.herokuapp.com/skus/${id}`).then(
     (res) => {
@@ -14,10 +15,14 @@ function loadProducts(id, call, load) {
           call(data);
           load();
         });
-      } else console.log('erro');
+      } else {
+        load();
+        error();
+      }
     },
   ).catch((err) => {
-    console.log(err.message);
+    load();
+    error();
   });
 }
 
@@ -31,7 +36,8 @@ interface ProductInterface {
 }
 interface MyState {
   data: ProductInterface,
-  loading: boolean
+  loading: boolean,
+  error: boolean
 }
 
 class Product extends Component <RouteProps, MyState> {
@@ -42,12 +48,13 @@ class Product extends Component <RouteProps, MyState> {
         id: 0, name: '', imageUrl: '', description: '', salePrice: '', promotionalPrice: '',
       },
       loading: false,
+      error: false,
     };
   }
 
   componentDidMount() {
     loadProducts(this.props.match.params.id, (res) => this.setState({ data: res }),
-      () => this.setState((state) => ({ loading: !state.loading })));
+      () => this.setState((state) => ({ loading: !state.loading })), () => this.setState({ error: true }));
   }
 
   setProduct(data, allProducts, setProducts, allQtd, setAllQtd) {
@@ -81,36 +88,42 @@ class Product extends Component <RouteProps, MyState> {
         salePrice: '',
       },
       loading = false,
+      error,
     } = this.state;
-    if (!loading) {
+    if (loading) {
       return (
-        <CartContext.Consumer>
-          {({
-            products, setProducts, allQtd, setAllQtd,
-          }) => (
-            <section className="product">
-              <div className="product__image">
-                <img src={data.imageUrl} alt={data.imageUrl} />
-              </div>
-              <div className="product__info">
-                <div className="product__info__top">
-                  <div className="product__info__top--title title">{data.name}</div>
-                  <div className="product__info__top--description"><p>{data.description}</p></div>
-                </div>
-                <div className="product__info__bottom">
-                  <div className="product__info__bottom--price">
-                    R$
-                    {formatCurrency(data.salePrice)}
-                  </div>
-                  <div className="product__info__bottom--freight">Frete Grátis</div>
-                  <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data, products, (prods) => setProducts(prods), allQtd, (qtd) => setAllQtd(qtd))} color="primary" text="Adicionar ao Carrinho" /></div>
-                </div>
-              </div>
-            </section>
-          )}
-        </CartContext.Consumer>
+        <LoadingBounce />
       );
-    } return <LoadingBounce />;
+    } if (error) {
+      return <GenericErrorPage />;
+    }
+    return (
+      <CartContext.Consumer>
+        {({
+          products, setProducts, allQtd, setAllQtd,
+        }) => (
+          <section className="product">
+            <div className="product__image">
+              <img src={data.imageUrl} alt={data.imageUrl} />
+            </div>
+            <div className="product__info">
+              <div className="product__info__top">
+                <div className="product__info__top--title title">{data.name}</div>
+                <div className="product__info__top--description"><p>{data.description}</p></div>
+              </div>
+              <div className="product__info__bottom">
+                <div className="product__info__bottom--price">
+                  R$
+                  {formatCurrency(data.salePrice)}
+                </div>
+                <div className="product__info__bottom--freight">Frete Grátis</div>
+                <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data, products, (prods) => setProducts(prods), allQtd, (qtd) => setAllQtd(qtd))} color="primary" text="Adicionar ao Carrinho" /></div>
+              </div>
+            </div>
+          </section>
+        )}
+      </CartContext.Consumer>
+    );
   }
 }
 export default Product;
