@@ -3,17 +3,18 @@
 button:hover,
 button:focus {
   box-shadow:
-          inset -5em 0 0 0 var(--hover),
-          inset 5em 0 0 0 var(--hover);
+          inset -20em 0 0 0 var(--hover),
+          inset 20em 0 0 0 var(--hover);
 }
 $colors: (
         button--white: white,
+        button--primary: $primary,
 );
 
 @each $button, $color in $colors {
   .#{$button} {
     --color: #{$color};
-    --hover: #{adjust-hue($color, 45deg)};
+    --hover: #{$color};
   }
 }
 
@@ -21,9 +22,9 @@ button {
   background: none;
   border: 2px solid;
   line-height: 1;
-  margin: 0.5em;
   padding: 1em 2em;
   color: var(--color);
+  font-size: 15px;
   transition: 0.25s;
   cursor: pointer;
   &:hover,

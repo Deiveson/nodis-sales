@@ -1,0 +1,111 @@
+$padding: 2rem;
+.container-cart{
+  position: fixed;
+  width: 100vw;
+  height: 100vw;
+  background-color: rgba(0,0,0,0);
+  transition: all 0.3s ease-in;
+  transform-origin: right;
+  z-index: -1;
+  &.show-background{
+    background-color: rgba(0,0,0,0.3);
+    z-index: 2;
+  }
+}
+.cart{
+  position: absolute;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "cart-header" "cart-list" "cart-footer";
+  right: -35vw;
+  height: 100vh;
+  width: 30vw;
+  background-color: #eaeaea;
+  box-shadow: -10px 0px 42px -16px rgba(0,0,0,0.75);
+  transition: all 0.5s ease-in-out;
+  transform-origin: right;
+  &.show-cart{
+    right: 0;
+  }
+  &__header{
+    grid-area: cart-header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+    padding: $padding;
+    i{
+      color:  $danger;
+    }
+    span{
+      font-size: 0.8em;
+      text-transform: uppercase;
+    }
+  }
+  &__list{
+    overflow: scroll;
+    grid-area: cart-list;
+    &__item{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background-color: white;
+      margin-bottom: 10px;
+      &__info{
+        display: flex;
+        align-items: center;
+        margin-right: 4px;
+        i{
+          margin-right: 10px;
+        }
+        picture{
+          width: 80px;
+          margin-right: 14px;
+          img{
+            position: relative;
+            width: 100%;
+          }
+        }
+        span{
+          text-transform: uppercase;
+          font-size: 0.8em;
+          text-align: justify-all;
+          width: 50%;
+          overflow: hidden;
+        }
+      }
+      &__price{
+        margin-right: 10px;
+        &--total-itens{
+          padding-right: 15px;
+          span{
+            position: relative;
+            bottom: 1px;
+            margin: 0 5px;
+          }
+          i{
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  &__footer{
+    grid-area: cart-footer;
+    width: calc(100% - 4rem);
+    bottom: 0;
+    padding: 1rem $padding;
+    &--total{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    button{
+      margin-top: 8px;
+      display: block;
+      width: 100%;
+    }
+  }
+}
