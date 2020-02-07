@@ -22,7 +22,7 @@ const CartItem = ({
   <div className="cart__list__item">
     <div className="cart__list__item__info">
       <Icon value="close cursor-pointer" onClick={() => removeAllProductItens(id)} />
-      <picture><img src={imageUrl} alt="image" /></picture>
+      <picture><img src={imageUrl} alt={imageUrl} /></picture>
       <span className="title">{name}</span>
     </div>
     <div className="cart__list__item__price">
@@ -67,7 +67,6 @@ class Cart extends Component<CartProps> {
 
   renderTotal(allQtd, products): number {
     let total = 0;
-    console.log(products);
     products.forEach((item) => {
       total += (item.salePrice * allQtd[item.id]);
     });
@@ -89,12 +88,13 @@ class Cart extends Component<CartProps> {
                   <Icon value="close cursor-pointer" onClick={() => showCart(false)} />
                 </section>
                 <section className="cart__list">
-                  {products?.map && products?.map((product) => {
+                  {products?.map && products?.map((product, i) => {
                     if (product.name) {
                       return (
                         <CartItem
                           imageUrl={product.imageUrl}
                           name={product.name}
+                          key={i.toString()}
                           saleValue={product.salePrice}
                           id={product.id}
                           removeAllProductItens={(id) => this.removeAllProductItens(id, (prod) => setProducts(prod), products, allQtd, setAllQtd)}
