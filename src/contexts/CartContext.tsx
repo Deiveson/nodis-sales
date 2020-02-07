@@ -7,6 +7,8 @@ interface CartInterface {
     setProducts?: any;
     show?: boolean;
     showCart?: any;
+    allQtd?: any;
+    setAllQtd?: any;
 }
 
 const CartContext = createContext<CartInterface>({

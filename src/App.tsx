@@ -16,15 +16,16 @@ const initialProducts = [{
 const App = () => {
   const [products, setProducts] = useState(initialProducts);
   const [showCart, setShowCart] = useState(false);
+  const [allQtd, setAllQtd] = useState({});
+  const forceUpdate = useForceUpdate();
 
   useEffect(() => {
     getProducts();
+    getAllqtd();
   }, []);
-  const forceUpdate = useForceUpdate();
-
 
   const getProducts = () => {
-    const prods = JSON.parse(localStorage.getItem('nodis-cart') || JSON.stringify(initialProducts));
+    const prods = JSON.parse(localStorage.getItem('nodis-cart') || JSON.stringify([]));
     setProducts(prods);
   };
 
@@ -34,6 +35,17 @@ const App = () => {
     setProducts(value);
     forceUpdate();
   };
+  const getAllqtd = () => {
+    const qtd = JSON.parse(localStorage.getItem('nodis-cart-qtd') || JSON.stringify({}));
+    setAllQtd(qtd);
+  };
+
+  const setQtd = (value) => {
+    const prods = JSON.stringify(value || {});
+    localStorage.setItem('nodis-cart-qtd', prods);
+    setAllQtd(value);
+    forceUpdate();
+  };
 
   return (
     <CartContext.Provider value={{
@@ -41,6 +53,8 @@ const App = () => {
       setProducts: (prod) => { setLocalProducts(prod); },
       show: showCart,
       showCart: (status) => { setShowCart(status); },
+      allQtd,
+      setAllQtd: (qtd) => { setQtd(qtd); },
     }}
     >
       <Cart />

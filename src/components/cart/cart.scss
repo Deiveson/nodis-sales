@@ -53,9 +53,10 @@ $padding: 2rem;
       padding: 1rem;
       background-color: white;
       margin-bottom: 10px;
-      &--info{
+      &__info{
         display: flex;
         align-items: center;
+        margin-right: 4px;
         i{
           margin-right: 10px;
         }
@@ -75,8 +76,19 @@ $padding: 2rem;
           overflow: hidden;
         }
       }
-      &--price{
+      &__price{
         margin-right: 10px;
+        &--total-itens{
+          padding-right: 15px;
+          span{
+            position: relative;
+            bottom: 1px;
+            margin: 0 5px;
+          }
+          i{
+            cursor: pointer;
+          }
+        }
       }
     }
   }

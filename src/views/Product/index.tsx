@@ -5,13 +5,6 @@ import { formatCurrency } from '../../components/util/fnUtils';
 import Button from '../../components/button';
 import CartContext from '../../contexts/CartContext';
 
-
-// async function loadProducts(id, call) {
-//   const response = await fetch(`https://frontend-challenge-beginner.herokuapp.com/skus/${id}`);
-//   const data = await response.json();
-//   call(data);
-// }
-
 function loadProducts(id, call, load) {
   load();
   fetch(`https://frontend-challenge-beginner.herokuapp.com/skus/${id}`).then(
@@ -27,6 +20,7 @@ function loadProducts(id, call, load) {
     console.log(err.message);
   });
 }
+
 interface ProductInterface {
   id: number;
   name: string;
@@ -56,12 +50,25 @@ class Product extends Component <RouteProps, MyState> {
       () => this.setState((state) => ({ loading: !state.loading })));
   }
 
-  setProduct(data, allProducts, setProducts) {
+  setProduct(data, allProducts, setProducts, allQtd, setAllQtd) {
     const prod = allProducts;
-    prod.push({
-      id: data.id, name: data.name, salePrice: data.salePrice, imageUrl: data.imageUrl,
+    let found = false;
+    prod.forEach((item) => {
+      if (item.id === data.id) {
+        found = true;
+      }
     });
-    setProducts(prod);
+    if (!found) {
+      prod.push({
+        id: data.id, name: data.name, salePrice: data.salePrice, imageUrl: data.imageUrl,
+      });
+      setProducts(prod);
+    }
+    if (allQtd[data.id]) {
+      setAllQtd({ ...allQtd, [data.id]: allQtd[data.id] + 1 });
+    } else {
+      setAllQtd({ ...allQtd, [data.id]: 1 });
+    }
   }
 
   render() {
@@ -78,7 +85,9 @@ class Product extends Component <RouteProps, MyState> {
     if (!loading) {
       return (
         <CartContext.Consumer>
-          {({ products, setProducts }) => (
+          {({
+            products, setProducts, allQtd, setAllQtd,
+          }) => (
             <section className="product">
               <div className="product__image">
                 <img src={data.imageUrl} alt={data.imageUrl} />
@@ -94,7 +103,7 @@ class Product extends Component <RouteProps, MyState> {
                     {formatCurrency(data.salePrice)}
                   </div>
                   <div className="product__info__bottom--freight">Frete Grátis</div>
-                  <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data, products, (prods) => setProducts(prods))} color="primary" text="Adicionar ao Carrinho" /></div>
+                  <div className="product__info__bottom--add-cart"><Button onClick={() => this.setProduct(data, products, (prods) => setProducts(prods), allQtd, (qtd) => setAllQtd(qtd))} color="primary" text="Adicionar ao Carrinho" /></div>
                 </div>
               </div>
             </section>
