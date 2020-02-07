@@ -27,7 +27,7 @@ const Header: React.FC = () => {
         </ul>
         <ul>
           <li>Conta</li>
-          <li className="header__nav--cart" onClick={() => showCart(true)}>
+          <li className="header__nav--cart" onClick={() => showCart(true)} style={renderCountProducts() === 0 ? { bottom: 0 } : {}}>
             <span><Icon value="basket-loaded" /></span>
             {allQtd && Object.entries(allQtd).length > 0 ? <span className="badge-count">{renderCountProducts()}</span> : <></>}
           </li>
