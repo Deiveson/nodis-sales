@@ -8,6 +8,7 @@ import Header from './components/header';
 import Home from './views/Home';
 import Product from './views/Product';
 import Cart from './components/cart';
+import Footer from './components/footer';
 
 const initialProducts = [{
   id: 0, name: '', imageUrl: '', salePrice: '',
@@ -68,9 +69,9 @@ const App = () => {
               <Route component={Home} />
             </Switch>
           </main>
-          <footer className="footer" />
         </Router>
       </div>
+      <Footer />
     </CartContext.Provider>
   );
 };
